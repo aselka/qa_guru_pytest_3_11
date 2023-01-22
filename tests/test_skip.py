@@ -9,26 +9,24 @@ from model.pages.github_page import open_page,\
     check_header_sign_in
 
 
-@pytest.fixture()
-def browser_config():
-    browser.config.window_width = 1920
-    browser.config.window_height = 1080
-
-
-def test_github_desktop(browser_config):
-    if browser.config.window_width == 1920 and browser.config.window_height == 1080:
+@pytest.mark.parametrize("width, height", [pytest.param(1900, 1080), pytest.param(900, 940)])
+def test_github_desktop(width, height):
+    if width == 900:
         pytest.skip("Размер окна под мобильную версию!")
-    else:
-        open_page()
-        click_button_sign_in()
-        check_header_sign_in()
+    browser.config.window_width = width
+    browser.config.window_height = height
+    open_page()
+    click_button_sign_in()
+    check_header_sign_in()
 
 
-def test_github_mobile(browser_config):
-    if browser.config.window_width == 900 and browser.config.window_height == 940:
+@pytest.mark.parametrize("width, height", [pytest.param(1900, 1080), pytest.param(900, 940)])
+def test_github_mobile(width, height):
+    if width == 1900:
         pytest.skip("Размер окна под десктопную версию!")
-    else:
-        open_page()
-        click_button_hamburger()
-        click_button_sign_in()
-        check_header_sign_in()
+    browser.config.window_width = width
+    browser.config.window_height = height
+    open_page()
+    click_button_hamburger()
+    click_button_sign_in()
+    check_header_sign_in()
